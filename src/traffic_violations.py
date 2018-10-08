@@ -25,7 +25,12 @@ TRAFFIC_VIOLATIONS_CONFIG = DatasetInfo(
     source="https://catalog.data.gov/dataset/ traffic-violations-56dda"
 )
 
-data_dir = fetch(TRAFFIC_VIOLATIONS_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_traffic_violations_df(save=True):
+    data_dir = fetch(TRAFFIC_VIOLATIONS_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path)
+    if save:
+        df.to_csv('traffic_violations_df.csv')
+    return df

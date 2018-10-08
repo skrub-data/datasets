@@ -24,7 +24,12 @@ JOURNAL_INFLUENCE_CONFIG = DatasetInfo(
     source="https://github.com/FlourishOA/Data/raw/master/"
 )
 
-data_dir = fetch(JOURNAL_INFLUENCE_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_journal_influence_df(save=True):
+    data_dir = fetch(JOURNAL_INFLUENCE_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path)
+    if save:
+        df.to_csv('journal_influence_df.csv')
+    return df

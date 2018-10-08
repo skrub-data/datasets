@@ -24,12 +24,21 @@ OPEN_PAYMENTS_CONFIG = DatasetInfo(
     source='https://openpaymentsdata.cms.gov'
 )
 
-data_dir = fetch(OPEN_PAYMENTS_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
 
-# TODO: multiple files to read and merge
+def _get_file_paths(directory):
+    f = [os.path.join(directory, file) for file in os.listdir(directory) if
+         '.txt' not in file and 'REMOVED' not in file]
+    return f
 
-# FIXME: There are multiple merging ways, firstname + lastname, hospital name or adress
-# FIXME: Id is not reliable (too many missing)
+
+def get_docs_payment_df(save=True):
+    data_dir = fetch(OPEN_PAYMENTS_CONFIG)
+    files = _get_file_paths(data_dir)
+    dfs = [pandas.read_csv(file) for file in files]
+    df = pandas.concat(objs=dfs, axis=0, join='outer', keys=['A', 'B', 'C'], sort=True)
+    if save:
+        df.to_csv('docs_payments_df.csv', chunksize=10000, compression='gzip')
+    return df
+
+
+get_docs_payment_df()

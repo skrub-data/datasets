@@ -98,31 +98,34 @@ def get_file_paths(directory):
     return f
 
 
-data_dir = fetch(ROAD_SAFETY_CONFIG)
-files = get_file_paths(data_dir)
+def get_road_safety_df(save=True):
+    data_dir = fetch(ROAD_SAFETY_CONFIG)
+    files = get_file_paths(data_dir)
 
-df_res = pandas.DataFrame()
-description = xlrd.open_workbook(files['description'])
+    df_res = pandas.DataFrame()
+    description = xlrd.open_workbook(files['description'])
 
-for file in files['data']:
-    df = pandas.read_csv(file)
-    for name in df.keys():
-        if name in MAPPING_COL_TO_DESCR:
-            sheet = description.sheet_by_name(MAPPING_COL_TO_DESCR[name])
-            x = sheet.first_visible_rowx + 1
-            mapping = {sheet.cell_value(j, 0): sheet.cell_value(j, 1) for j in range(x, sheet.nrows)}
-            result_array = []
-            for r in df[name]:
-                try:
-                    result_array.append(mapping[r])
-                except KeyError:
-                    result_array.append("Nan")
-            df[name] = result_array
+    for file in files['data']:
+        df = pandas.read_csv(file)
+        for name in df.keys():
+            if name in MAPPING_COL_TO_DESCR:
+                sheet = description.sheet_by_name(MAPPING_COL_TO_DESCR[name])
+                x = sheet.first_visible_rowx + 1
+                mapping = {sheet.cell_value(j, 0): sheet.cell_value(j, 1) for j in range(x, sheet.nrows)}
+                result_array = []
+                for r in df[name]:
+                    try:
+                        result_array.append(mapping[r])
+                    except KeyError:
+                        result_array.append("Nan")
+                df[name] = result_array
 
-    # df = df.set_index('Accident_Index')
-    # if df_res.empty:
-    # df_res = df
-    # else:
-    # df_res = df_res.join(df, how='left', lsuffix='_df_res', rsuffix='_df')
+        df = df.set_index('Accident_Index')
+        if df_res.empty:
+            df_res = df
+        else:
+            df_res = df_res.join(df, how='left', lsuffix='_df_res', rsuffix='_df')
 
-# df_res.to_csv('test.csv')
+    if save:
+        df_res.to_csv('road_safety_df.csv')
+    return df_res

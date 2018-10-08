@@ -24,7 +24,12 @@ MIDWEST_SURVEY_CONFIG = DatasetInfo(
     source="https://raw.githubusercontent.com/fivethirtyeight/data/master/region-survey"
 )
 
-data_dir = fetch(MIDWEST_SURVEY_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_midwest_survey_df(save=True):
+    data_dir = fetch(MIDWEST_SURVEY_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path)
+    if save:
+        df.to_csv('midwest_survey_df.csv')
+    return df

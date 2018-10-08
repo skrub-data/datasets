@@ -22,8 +22,12 @@ COLLEGES_CONFIG = DatasetInfo(
     source="https://beachpartyserver.azurewebsites.net/VueBigData/DataFiles"
 )
 
-data_dir = fetch(COLLEGES_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
 
-df = pandas.read_csv(csv_path, sep='\t', encoding='latin1')
+def get_colleges_df(save=True):
+    data_dir = fetch(COLLEGES_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path, sep='\t', encoding='latin1')
+    if save:
+        df.to_csv('colleges_df.csv')
+    return df

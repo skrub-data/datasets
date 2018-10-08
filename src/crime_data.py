@@ -24,7 +24,12 @@ CRIME_DATA_CONFIG = DatasetInfo(
     source="https://catalog.data.gov/dataset/crime-data-from-2010-to-present"
 )
 
-data_dir = fetch(CRIME_DATA_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_crime_df(save=True):
+    data_dir = fetch(CRIME_DATA_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path)
+    if save:
+        df.to_csv('crime_df.csv')
+    return df

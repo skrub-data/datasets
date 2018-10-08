@@ -24,7 +24,12 @@ EMPLOYEE_SALARIES_CONFIG = DatasetInfo(
     source="https://catalog.data.gov/dataset/employee-salaries-2016"
 )
 
-data_dir = fetch(EMPLOYEE_SALARIES_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_employee_salaries_df(save=True):
+    data_dir = fetch(EMPLOYEE_SALARIES_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path)
+    if save:
+        df.to_csv('employee_salaries_df.csv')
+    return df

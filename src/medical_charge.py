@@ -30,7 +30,12 @@ MEDICAL_CHARGE_CONFIG = DatasetInfo(
            "/Inpatient.html"
 )
 
-data_dir = fetch(MEDICAL_CHARGE_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_medical_charge_df(save=True):
+    data_dir = fetch(MEDICAL_CHARGE_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path)
+    if save:
+        df.to_csv('medical_charge_df.csv')
+    return df

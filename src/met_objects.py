@@ -24,7 +24,12 @@ MET_OBJECTS_CONFIG = DatasetInfo(
     source="https://github.com/metmuseum/openaccess/raw/master/"
 )
 
-data_dir = fetch(MET_OBJECTS_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_met_objects_df(save=True):
+    data_dir = fetch(MET_OBJECTS_CONFIG)
+    file = os.listdir(data_dir)[0]
+    csv_path = os.path.join(data_dir, file)
+    df = pandas.read_csv(csv_path)
+    if save:
+        df.to_csv('met_objects_df.csv')
+    return df
