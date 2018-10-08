@@ -30,3 +30,6 @@ csv_path = os.path.join(data_dir, file)
 df = pandas.read_csv(csv_path)
 
 # TODO: multiple files to read and merge
+
+# FIXME: There are multiple merging ways, firstname + lastname, hospital name or adress
+# FIXME: Id is not reliable (too many missing)
