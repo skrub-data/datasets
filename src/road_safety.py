@@ -5,7 +5,7 @@ from collections import namedtuple
 from common.file_management import fetch
 
 DatasetInfo = namedtuple('DatasetInfo',
-                         ['verbose', 'name', 'urlinfos', 'main_file', 'source'])
+                         ['name', 'urlinfos', 'main_file', 'source'])
 
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 

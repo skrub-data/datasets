@@ -29,9 +29,3 @@ data_dir = fetch(TRAFFIC_VIOLATIONS_CONFIG)
 file = os.listdir(data_dir)[0]
 csv_path = os.path.join(data_dir, file)
 df = pandas.read_csv(csv_path)
-
-
-'''
-DEBUG
-THE CSV STAY IN ROOT FOLDER AND IS NOT MOVED WHERE IT SHOULD BE
-'''

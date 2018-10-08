@@ -10,23 +10,21 @@ DatasetInfo = namedtuple('DatasetInfo',
 # in the request content
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 
-OPEN_PAYMENTS_CONFIG = DatasetInfo(
-    name='open_payments',
-    urlinfos=
-    (
+MET_OBJECTS_CONFIG = DatasetInfo(
+    name='met_objects',
+    urlinfos=(
         UrlInfo(
-            url='http://download.cms.gov/openpayments/PGYR13_P062918.ZIP',
-            # url='https://openpaymentsdata.cms.gov/api/views/xi5e-hzfv/rows.csv?accessType=DOWNLOAD',
-            filenames=None, uncompress=True
+            url='https://github.com/metmuseum/openaccess/raw/master/MetObjects.csv',
+            filenames=(
+                "MetObjects.csv",
+            ), uncompress=False
         ),
     ),
-    main_file='OP_DTL_GNRL_PGYR2013_P01172018.csv',  # same
-    source='https://openpaymentsdata.cms.gov'
+    main_file="MetObjects.csv",
+    source="https://github.com/metmuseum/openaccess/raw/master/"
 )
 
-data_dir = fetch(OPEN_PAYMENTS_CONFIG)
+data_dir = fetch(MET_OBJECTS_CONFIG)
 file = os.listdir(data_dir)[0]
 csv_path = os.path.join(data_dir, file)
 df = pandas.read_csv(csv_path)
-
-# TODO: multiple files to read and merge

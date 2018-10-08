@@ -7,7 +7,6 @@ import tarfile
 import urllib
 import zipfile
 
-from pprint import pprint
 from clint.textui import progress
 
 
@@ -35,6 +34,7 @@ def _uncompress_file(file, data_dir, delete_archive):
 
     with open(file, "rb") as fd:
         header = fd.read(4)
+
     processed = False
 
     if zipfile.is_zipfile(file):
@@ -55,7 +55,7 @@ def _uncompress_file(file, data_dir, delete_archive):
 
 def _process_file(file, data_dir, delete_archive=True):
     try:
-        if os.path.splitext(file)[1] not in ['.zip', '.tgz', '.tar.gz', '.gz']:
+        if os.path.splitext(file)[1].lower() not in ['.zip', '.tgz', '.tar.gz', '.gz']:
             shutil.move(file, data_dir)
         elif len(file) == 0 or not _uncompress_file(file, data_dir, delete_archive):
             raise IOError(
@@ -84,24 +84,38 @@ def _download_file(url):
     return file
 
 
+def _extract_filenames(config):
+    files = []
+    for cnf in config.urlinfos:
+        if cnf.filenames is not None:
+            for file in cnf.filenames:
+                files.append(file)
+    return files
+
+
 def _check_dir(config, directory=os.getcwd()):
+    download = False
     path = os.path.join(directory, 'data', config.name)
     paths = [os.path.join(path, 'raw'), os.path.join(path, 'output')]
-    if not os.path.exists(path):
+    files = _extract_filenames(config)
+
+    if not os.path.exists(path) or False in [os.path.exists(os.path.join(paths[0], f)) for f in files]:
+        shutil.rmtree(path, ignore_errors=True)
         for p in paths:
             os.makedirs(p)
-        return paths
-    shutil.rmtree(path, ignore_errors=True)
-    return paths
+        download = True
+
+    return paths, download
 
 
 def fetch(config):
-    paths = _check_dir(config)
-    urls = [elt.url for elt in config.urlinfos]
-    for url in urls:
-        file = _download_file(url)
-        try:
-            _process_file(file, paths[0])
-        except Exception as e:
-            print(e)
+    paths, download = _check_dir(config)
+    if download:
+        urls = [elt.url for elt in config.urlinfos]
+        for url in urls:
+            file = _download_file(url)
+            try:
+                _process_file(file, paths[0])
+            except Exception as e:
+                print(e)
     return paths[0]

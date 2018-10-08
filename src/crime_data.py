@@ -20,7 +20,7 @@ CRIME_DATA_CONFIG = DatasetInfo(
             ), uncompress=True
         ),
     ),
-    main_file="rows.csv",
+    main_file="Crime_Data_from_2010_to_Present.csv",
     source="https://catalog.data.gov/dataset/crime-data-from-2010-to-present"
 )
 
@@ -28,8 +28,3 @@ data_dir = fetch(CRIME_DATA_CONFIG)
 file = os.listdir(data_dir)[0]
 csv_path = os.path.join(data_dir, file)
 df = pandas.read_csv(csv_path)
-
-'''
-DEBUG
-FILE NOT NAMED RIGHT + STAYS IN ROOT FOLDER
-'''
