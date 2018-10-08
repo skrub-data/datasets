@@ -1,13 +1,9 @@
 import os
 import pandas
 from collections import namedtuple
-from common.file_management import fetch
+from common.file_management import fetch, write_df
 
-DatasetInfo = namedtuple('DatasetInfo',
-                         ['name', 'urlinfos', 'main_file', 'source'])
-# a DatasetInfo Object is basically a tuple of UrlInfos object
-# an UrlInfo object is composed of an url and the filenames contained
-# in the request content
+DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 
 JOURNAL_INFLUENCE_CONFIG = DatasetInfo(
@@ -27,9 +23,8 @@ JOURNAL_INFLUENCE_CONFIG = DatasetInfo(
 
 def get_journal_influence_df(save=True):
     data_dir = fetch(JOURNAL_INFLUENCE_CONFIG)
-    file = os.listdir(data_dir)[0]
-    csv_path = os.path.join(data_dir, file)
+    file = os.listdir(data_dir[0])[0]
+    csv_path = os.path.join(data_dir[0], file)
     df = pandas.read_csv(csv_path)
-    if save:
-        df.to_csv('journal_influence_df.csv')
+    write_df(save, df, data_dir[1], JOURNAL_INFLUENCE_CONFIG.main_file)
     return df

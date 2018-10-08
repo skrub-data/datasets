@@ -1,13 +1,9 @@
 import os
 import pandas
 from collections import namedtuple
-from common.file_management import fetch
+from common.file_management import fetch, write_df
 
-DatasetInfo = namedtuple('DatasetInfo',
-                         ['name', 'urlinfos', 'main_file', 'source'])
-# a DatasetInfo Object is basically a tuple of UrlInfos object
-# an UrlInfo object is composed of an url and the filenames contained
-# in the request content
+DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 
 CRIME_DATA_CONFIG = DatasetInfo(
@@ -16,7 +12,7 @@ CRIME_DATA_CONFIG = DatasetInfo(
         UrlInfo(
             url="https://data.lacity.org/api/views/y8tr-7khq/rows.csv?accessType=DOWNLOAD",
             filenames=(
-                "Crime_Data_from_2010_to_Present.csv",
+                "rows.csv",
             ), uncompress=True
         ),
     ),
@@ -27,9 +23,8 @@ CRIME_DATA_CONFIG = DatasetInfo(
 
 def get_crime_df(save=True):
     data_dir = fetch(CRIME_DATA_CONFIG)
-    file = os.listdir(data_dir)[0]
-    csv_path = os.path.join(data_dir, file)
+    file = os.listdir(data_dir[0])[0]
+    csv_path = os.path.join(data_dir[0], file)
     df = pandas.read_csv(csv_path)
-    if save:
-        df.to_csv('crime_df.csv')
+    write_df(save, df, data_dir[1], CRIME_DATA_CONFIG.main_file)
     return df

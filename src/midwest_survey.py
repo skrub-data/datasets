@@ -1,13 +1,9 @@
 import os
 import pandas
 from collections import namedtuple
-from common.file_management import fetch
+from common.file_management import fetch, write_df
 
-DatasetInfo = namedtuple('DatasetInfo',
-                         ['name', 'urlinfos', 'main_file', 'source'])
-# a DatasetInfo Object is basically a tuple of UrlInfos object
-# an UrlInfo object is composed of an url and the filenames contained
-# in the request content
+DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 
 MIDWEST_SURVEY_CONFIG = DatasetInfo(
@@ -20,16 +16,15 @@ MIDWEST_SURVEY_CONFIG = DatasetInfo(
             ), uncompress=False
         ),
     ),
-    main_file="FiveThirtyEight_Midwest_Survey.csv",
+    main_file="midwest_survey.csv",
     source="https://raw.githubusercontent.com/fivethirtyeight/data/master/region-survey"
 )
 
 
 def get_midwest_survey_df(save=True):
     data_dir = fetch(MIDWEST_SURVEY_CONFIG)
-    file = os.listdir(data_dir)[0]
-    csv_path = os.path.join(data_dir, file)
+    file = os.listdir(data_dir[0])[0]
+    csv_path = os.path.join(data_dir[0], file)
     df = pandas.read_csv(csv_path)
-    if save:
-        df.to_csv('midwest_survey_df.csv')
+    write_df(save, df, data_dir[1], MIDWEST_SURVEY_CONFIG.main_file)
     return df
