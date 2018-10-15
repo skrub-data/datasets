@@ -1,7 +1,9 @@
 import datetime
 import os
-import pandas
 from collections import namedtuple
+
+import pandas as pd
+
 from common.file_management import fetch, write_df
 
 DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
@@ -26,7 +28,11 @@ def get_employee_salaries_df(save=True):
     data_dir = fetch(EMPLOYEE_SALARIES_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
-    df = pandas.read_csv(csv_path)
+    df = pd.read_csv(csv_path)
     df['Year First Hired'] = [datetime.datetime.strptime(d, '%m/%d/%Y').year for d in df['Date First Hired']]
+    df['Gender'] = df['Gender'].astype('category')
+    df['Department'] = df['Department'].astype('category')
+    df['Department Name'] = df['Department Name'].astype('category')
+    df['Assignment Category'] = df['Assignment Category'].astype('category')
     write_df(save, df, data_dir[1], EMPLOYEE_SALARIES_CONFIG.main_file)
     return df

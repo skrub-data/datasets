@@ -1,6 +1,9 @@
 import os
-import pandas
 from collections import namedtuple
+
+import numpy as np
+import pandas as pd
+
 from common.file_management import fetch, write_df
 
 DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
@@ -25,6 +28,21 @@ def get_met_objects_df(save=True):
     data_dir = fetch(MET_OBJECTS_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
-    df = pandas.read_csv(csv_path)
+    df = pd.read_csv(csv_path)
+    cat_cols = ['Is Highlight', 'Is Public Domain', 'Department', 'Dynasty', 'State']
+    clean = ['Geography Type', 'State', 'Classification', 'Artist Role', 'Artist Prefix', 'Artist Display Bio',
+             'Artist Suffix', 'Geography Type']
+    for c in clean:
+        tab = []
+        for elt in df[c]:
+            if elt == '|' or elt == '||' or elt == '(none assigned)':
+                tab.append(np.nan)
+            else:
+                tab.append(elt)
+        df[c] = pd.Series(tab, dtype=np.object, index=df.index)
+
+    for c in cat_cols:
+        df[c] = df[c].astype('category')
+
     write_df(save, df, data_dir[1], MET_OBJECTS_CONFIG.main_file)
     return df

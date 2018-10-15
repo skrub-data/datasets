@@ -1,7 +1,8 @@
 import os
-import pandas
-
 from collections import namedtuple
+
+import pandas as pd
+
 from common.file_management import fetch, write_df
 
 amount = ['Total_Amount_of_Payment_USDollars']
@@ -37,10 +38,10 @@ def _get_file_paths(directory):
 
 
 def _process_df(files):
-    res_df = pandas.DataFrame(columns=df_cols)
+    res_df = pd.DataFrame(columns=df_cols)
 
     for key in files:
-        df = pandas.read_csv(files[key])
+        df = pd.read_csv(files[key])
         df = df[df_cols]
 
         if 'RSRCH' in key:
@@ -49,7 +50,7 @@ def _process_df(files):
             df['status'] = 'disallowed'
 
         df = df.drop_duplicates(keep='first')
-        res_df = pandas.concat([res_df, df], ignore_index=True, sort=True)
+        res_df = pd.concat([res_df, df], ignore_index=True, sort=True)
 
     res_df = res_df.drop_duplicates(keep='first')
     return res_df
@@ -59,5 +60,6 @@ def get_open_payment_df(save=True):
     data_dir = fetch(OPEN_PAYMENTS_CONFIG)
     files = _get_file_paths(data_dir[0])
     df = _process_df(files)
+    df['Physician_Specialty'] = df['Physician_Specialty'].astype('category')
     write_df(save, df, data_dir[1], OPEN_PAYMENTS_CONFIG.main_file)
     return df

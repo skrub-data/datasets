@@ -1,8 +1,11 @@
 import os
-import pandas
-import xlrd
 from collections import namedtuple
-from common.file_management import fetch, write_df
+
+import numpy as np
+import pandas as pd
+import xlrd
+
+from common.file_management import fetch, write_df, float_to_int
 
 DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
@@ -118,9 +121,9 @@ def _denormalize(df, descr):
 
 
 def _process_df(files):
-    res_df = pandas.DataFrame()
+    res_df = pd.DataFrame()
     for file in files['data']:
-        df = pandas.read_csv(file)
+        df = pd.read_csv(file)
 
         if 'Accidents_2015.csv' not in file:
             df['Vehicle_Reference'] = (df['Vehicle_Reference'].map(str))
@@ -144,5 +147,37 @@ def get_road_safety_df(save=True):
     data_dir = fetch(ROAD_SAFETY_CONFIG)
     files = _get_file_paths(data_dir[0])
     df = _process_df(files)
+    f_to_i = ['1st_Road_Number', '2nd_Road_Number', 'Location_Easting_OSGR', 'Location_Northing_OSGR',
+              'Number_of_Vehicles', 'Number_of_Casualties', 'Speed_limit', 'accyr', 'Engine_Capacity_(CC)_df',
+              'Age_of_Vehicle_df']
+    str_to_i = ['Vehicle_Reference', 'Vehicle_Reference_df', 'Vehicle_Reference_df_res']
+    to_del = ['data missing or out of range', 'none', -1, 'unknown or other', 'not known', 'unclassified', 'unknown',
+              'nan']
+
+    for c in df:
+        tab = []
+        for elt in df[c]:
+            if (isinstance(elt, str) and elt.lower() in to_del) or elt in to_del:
+                tab.append(np.nan)
+            else:
+                tab.append(elt)
+        df[c] = pd.Series(tab, dtype=np.object, index=df.index)
+
+    for c in f_to_i:
+        df[c] = float_to_int(df[c], df.index)
+
+    for c in str_to_i:
+        tab = []
+        for elt in df[c]:
+            if isinstance(elt, str):
+                tab.append(int(elt))
+            else:
+                tab.append(elt)
+        df[c] = pd.Series(tab, dtype=np.object, index=df.index)
+
+    for c in df:
+        if len(df[c].unique()) == 1 and str(df[c].unique()[0]) == 'nan':
+            df.drop([c], 1, inplace=True)
+
     write_df(save, df, data_dir[1], ROAD_SAFETY_CONFIG.main_file)
     return df

@@ -1,13 +1,14 @@
 import contextlib
 import gzip
+import numpy as np
 import os
-import sys
-
-import requests
+import pandas as pd
 import shutil
 import tarfile
 import urllib
 import zipfile
+
+import requests
 
 
 def _unzip(file, data_dir='./'):
@@ -124,3 +125,13 @@ def write_df(save, df, path, name):
     save_path = os.path.join(path, name)
     if save:
         df.to_csv(save_path)
+
+
+def float_to_int(col, index):
+    c = []
+    for elt in col:
+        try:
+            c.append(int(elt))
+        except ValueError as e:
+            c.append(np.nan)
+    return pd.Series(c, dtype=np.object, index=index)
