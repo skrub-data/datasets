@@ -34,7 +34,6 @@ def _clean_cols(cols, df):
                 else:
                     tab.append(elt)
             df[c] = pd.Series(tab, dtype=np.object, index=df.index)
-            df[c] = df[c].astype('category')
         elif 'Mean Earnings' in c or 'Median Earnings' in c:
             for elt in df[c]:
                 if isinstance(elt, str) and 'PrivacySuppressed' in elt:
@@ -62,7 +61,7 @@ def get_colleges_df(save=True):
             'Mean Earnings 6 years', 'Median Earnings 6 years', 'Mean Earnings 10 years', 'Median Earnings 10 years']
     df = _clean_cols(cols, df)
 
-    cats = ['State', 'Predominant Degree', 'Highest Degree', 'Ownership', 'Region']
+    cats = ['State', 'Predominant Degree', 'Highest Degree', 'Ownership', 'Region', 'ZIP']
     for c in cats:
         df[c] = df[c].astype('category')
 
