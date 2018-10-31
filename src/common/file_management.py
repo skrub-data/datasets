@@ -1,13 +1,13 @@
 import contextlib
 import gzip
-import numpy as np
 import os
-import pandas as pd
 import shutil
 import tarfile
 import urllib
 import zipfile
 
+import numpy as np
+import pandas as pd
 import requests
 
 
