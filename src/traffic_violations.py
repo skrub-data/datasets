@@ -21,7 +21,7 @@ TRAFFIC_VIOLATIONS_CONFIG = DatasetInfo(
         ),
     ),
     main_file="traffic_violations.csv",
-    source="https://catalog.data.gov/dataset/ traffic-violations-56dda"
+    source="https://catalog.data.gov/dataset/traffic-violations-56dda"
 )
 
 

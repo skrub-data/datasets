@@ -34,6 +34,5 @@ def get_employee_salaries_df(save=True):
     df['Department'] = df['Department'].astype('category')
     df['Department Name'] = df['Department Name'].astype('category')
     df['Assignment Category'] = df['Assignment Category'].astype('category')
-    df.columns = df.columns.str.replace(' ', '_')
     write_df(save, df, data_dir[1], EMPLOYEE_SALARIES_CONFIG.main_file)
     return df
