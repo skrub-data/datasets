@@ -4,13 +4,12 @@ from openml.datasets import create_dataset
 from midwest_survey import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_midwest_survey_df()
 
 params = {
-    'name': 'Midwest survey',
+    'name': 'Midwest_survey',
     'description': 'Survey to know if people self-identify as Midwesterners.',
-    'creator': 'FiveThiryEight.com',
+    'creator': 'FiveThiryEight',
     'contributor': None,
     'language': 'English',
     'licence': 'Creative Commons Attribution 4.0 International License',
@@ -18,7 +17,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Location (Census Region)',
+    'default_target_attribute': 'Location_Census_Region',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
@@ -28,4 +27,6 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('midwest.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()

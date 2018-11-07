@@ -4,12 +4,10 @@ from openml.datasets import create_dataset
 from medical_charge import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_medical_charge_df()
 
-# TODO: NA
 params = {
-    'name': 'Medical charges',
+    'name': 'medical_charges',
     'description': 'The Inpatient Utilization and Payment Public Use File (Inpatient PUF) provides information on '
                    'inpatient discharges for Medicare fee-for-service beneficiaries. The Inpatient PUF includes '
                    'information on utilization, payment (total payment and Medicare payment), and hospital-specific '
@@ -24,7 +22,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Average total payments',
+    'default_target_attribute': 'Average_total_payments',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
@@ -34,4 +32,7 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('medical.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()
+print(open_ml_id)

@@ -30,4 +30,6 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('employeexml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()

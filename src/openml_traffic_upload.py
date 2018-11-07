@@ -2,13 +2,12 @@ import openml
 from openml.datasets import create_dataset
 
 from traffic_violations import *
-
+#FIXME
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_traffic_violations_df()
 
 params = {
-    'name': 'Traffic violations',
+    'name': 'Traffic_violations',
     'description': 'This dataset contains traffic violation information from all electronic traffic violations issued '
                    'in the County. Any information that can be used to uniquely identify the vehicle, the vehicle '
                    'owner or the officer issuing the violation will not be published.',
@@ -20,7 +19,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Violation type',
+    'default_target_attribute': 'Violation_type',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
@@ -30,4 +29,7 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('traffic.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()
+print(open_ml_id)

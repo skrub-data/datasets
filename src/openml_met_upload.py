@@ -2,9 +2,8 @@ import openml
 from openml.datasets import create_dataset
 
 from met_objects import *
-
+#FIXME
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_met_objects_df()
 
 params = {
@@ -31,4 +30,7 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('met.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()
+print(open_ml_id)

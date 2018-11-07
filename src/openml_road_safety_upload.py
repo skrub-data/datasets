@@ -4,11 +4,10 @@ from openml.datasets import create_dataset
 from road_safety import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_road_safety_df()
 
 params = {
-    'name': 'Road safety',
+    'name': 'road_safety',
     'description': 'Data reported to the police about the circumstances of per- sonal injury road accidents in Great '
                    'Britain from 1979, and the maker and model information of vehicles involved in the respective '
                    'accident',
@@ -20,7 +19,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Sex of Driver',
+    'default_target_attribute': 'Sex_of_Driver',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',

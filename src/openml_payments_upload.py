@@ -4,11 +4,10 @@ from openml.datasets import create_dataset
 from open_payments import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_open_payment_df()
 
 params = {
-    'name': 'Open Payments',
+    'name': 'open_payments',
     'description': 'Payments given by healthcare manufacturing companies to medical doctors or hospitals',
     'creator': 'Centers for Medicare & Medicaid Services',
     'contributor': None,
@@ -28,4 +27,6 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('payments.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()

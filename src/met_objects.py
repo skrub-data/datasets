@@ -23,15 +23,23 @@ MET_OBJECTS_CONFIG = DatasetInfo(
     source="https://github.com/metmuseum/openaccess/raw/master/"
 )
 
-
 def get_met_objects_df(save=True):
     data_dir = fetch(MET_OBJECTS_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
     df = pd.read_csv(csv_path)
-    cat_cols = ['Is Highlight', 'Is Public Domain', 'Department', 'Dynasty', 'State']
+    cat_cols = ['Department', 'Dynasty', 'State']
     clean = ['Geography Type', 'State', 'Classification', 'Artist Role', 'Artist Prefix', 'Artist Display Bio',
              'Artist Suffix', 'Geography Type']
+
+    period = []
+    for c in df['Period']:
+        if type(c) is str:
+            period.append(c)
+        else:
+            period.append(np.nan)
+    df['Period'] = pd.Series(period, dtype=np.object, index=df.index)
+
     for c in clean:
         tab = []
         for elt in df[c]:

@@ -2,13 +2,12 @@ import openml
 from openml.datasets import create_dataset
 
 from beer_reviews import *
-
+#FIXME
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_beer_reviews_df()
 
 params = {
-    'name': 'beer reviews',
+    'name': 'beer_reviews',
     'description': 'This dataset consists of beer reviews from Beeradvocate. The data span a period of more than 10 '
                    'years, including all ~1.5 million reviews up to November 2011. Each review includes ratings in '
                    'terms of five "aspects": appearance, aroma, palate, taste, and overall impression. Reviews '
@@ -22,7 +21,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Beer Style',
+    'default_target_attribute': 'Beer_Style',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
@@ -32,4 +31,7 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('beer.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()
+print(open_ml_id)

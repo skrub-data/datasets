@@ -42,7 +42,6 @@ def get_traffic_violations_df(save=True):
         df[c] = pd.Series(arr, dtype=np.object, index=df.index)
 
     df['VehicleType'] = df['VehicleType'].astype('category')
-    df['Year'] = df['Year'].astype('category')
     df['Arrest Type'] = df['Arrest Type'].astype('category')
     df['Race'] = df['Race'].astype('category')
     df['Violation Type'] = df['Violation Type'].astype('category')

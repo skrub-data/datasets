@@ -6,9 +6,8 @@ from journal_influence import *
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
 
 df = get_journal_influence_df()
-# TODO: NA
 params = {
-    'name': 'Article influence',
+    'name': 'article_influence',
     'description': 'Estimated article influence scores in 2015',
     'creator': 'Bree Norlander',
     'contributor': None,
@@ -28,4 +27,6 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('journal.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()

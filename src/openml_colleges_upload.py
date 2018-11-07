@@ -4,7 +4,6 @@ from openml.datasets import create_dataset
 from colleges import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_colleges_df()
 
 params = {
@@ -19,7 +18,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Faculty Salary',
+    'default_target_attribute': 'Faculty_Salary',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
@@ -29,4 +28,6 @@ params = {
 }
 
 dset = create_dataset(**params)
+with open('colleges.xml', 'w+') as file:
+    file.write(dset._to_xml())
 open_ml_id = dset.publish()
