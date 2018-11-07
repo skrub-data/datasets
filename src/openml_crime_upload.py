@@ -2,7 +2,7 @@ import openml
 from openml.datasets import create_dataset
 
 from crime_data import *
-#FIXME
+
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
 df = get_crime_df()
 
@@ -10,10 +10,9 @@ params = {
     'name': 'la_crimes',
     'description': 'This dataset reflects incidents of crime in the City of Los Angeles dating back to 2010. This '
                    'data is transcribed from original crime reports that are typed on paper and therefore there may '
-                   'be some inaccuracies within the data. Some location fields with missing data are noted as (0°, '
-                   '0°). Address fields are only provided to the nearest hundred block in order to maintain privacy. '
-                   'This data is as accurate as the data in the database. Please note questions or concerns in the '
-                   'comments.',
+                   'be some inaccuracies within the data. Address fields are only provided to the nearest hundred '
+                   'block in order to maintain privacy. This data is as accurate as the data in the database. Please '
+                   'note questions or concerns in the comments.',
     'creator': 'LAPD',
     'contributor': None,
     'language': 'English',
@@ -22,7 +21,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'crime_code_1',
+    'default_target_attribute': 'Crime_Code_1',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
@@ -32,7 +31,4 @@ params = {
 }
 
 dset = create_dataset(**params)
-with open('crime.xml', 'w+') as file:
-    file.write(dset._to_xml())
 open_ml_id = dset.publish()
-print(open_ml_id)

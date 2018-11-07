@@ -23,16 +23,29 @@ MET_OBJECTS_CONFIG = DatasetInfo(
     source="https://github.com/metmuseum/openaccess/raw/master/"
 )
 
+
 def get_met_objects_df(save=True):
     data_dir = fetch(MET_OBJECTS_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, encoding='utf-8')
     cat_cols = ['Department', 'Dynasty', 'State']
     clean = ['Geography Type', 'State', 'Classification', 'Artist Role', 'Artist Prefix', 'Artist Display Bio',
              'Artist Suffix', 'Geography Type']
 
     period = []
+    for c in df:
+        arr = []
+        for elt in df[c]:
+            if isinstance(elt, str) and '\r\n' in elt:
+                elt = elt.replace('\r\n', '')
+            if isinstance(elt, str) and '\u3000' in elt:
+                elt = elt.replace('\u3000', ' ')
+            if isinstance(elt, str) and '\x1e' in elt:
+                elt = elt.replace('\x1e', '')
+            arr.append(elt)
+        df[c] = pd.Series(arr, dtype=df[c].dtype, index=df.index)
+
     for c in df['Period']:
         if type(c) is str:
             period.append(c)

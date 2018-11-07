@@ -41,6 +41,14 @@ def get_traffic_violations_df(save=True):
                 arr.append(elt)
         df[c] = pd.Series(arr, dtype=np.object, index=df.index)
 
+    for c in df:
+        arr = []
+        for elt in df[c]:
+            if isinstance(elt, str) and '\n' in elt:
+                elt = elt.replace('\n', '')
+            arr.append(elt)
+        df[c] = pd.Series(arr, dtype=df[c].dtype, index=df.index)
+
     df['VehicleType'] = df['VehicleType'].astype('category')
     df['Arrest Type'] = df['Arrest Type'].astype('category')
     df['Race'] = df['Race'].astype('category')

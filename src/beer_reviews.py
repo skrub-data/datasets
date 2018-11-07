@@ -1,10 +1,9 @@
 import os
 from collections import namedtuple
 
-import numpy as np
 import pandas as pd
 
-from common.file_management import fetch, write_df, float_to_int
+from common.file_management import fetch, write_df
 
 DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
@@ -29,5 +28,12 @@ def get_beer_reviews_df(save=True):
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
     df = pd.read_csv(csv_path)
+    for c in df:
+        arr = []
+        for elt in df[c]:
+            if isinstance(elt, str) and '\xa0' in elt:
+                elt = elt.replace('\xa0', ' ')
+            arr.append(elt)
+        df[c] = pd.Series(arr, dtype=df[c].dtype, index=df.index)
     write_df(save, df, data_dir[1], BEER_REVIEWS_CONFIG.main_file)
     return df

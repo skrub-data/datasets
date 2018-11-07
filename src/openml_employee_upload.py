@@ -4,7 +4,6 @@ from openml.datasets import create_dataset
 from employee_salaries import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
-
 df = get_employee_salaries_df()
 
 params = {
@@ -30,6 +29,4 @@ params = {
 }
 
 dset = create_dataset(**params)
-with open('employeexml', 'w+') as file:
-    file.write(dset._to_xml())
 open_ml_id = dset.publish()

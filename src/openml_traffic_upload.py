@@ -2,7 +2,7 @@ import openml
 from openml.datasets import create_dataset
 
 from traffic_violations import *
-#FIXME
+
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
 df = get_traffic_violations_df()
 
@@ -29,7 +29,4 @@ params = {
 }
 
 dset = create_dataset(**params)
-with open('traffic.xml', 'w+') as file:
-    file.write(dset._to_xml())
 open_ml_id = dset.publish()
-print(open_ml_id)
