@@ -1,13 +1,12 @@
+import datetime
 import os
-import pandas
 from collections import namedtuple
-from common.file_management import fetch
 
-DatasetInfo = namedtuple('DatasetInfo',
-                         ['name', 'urlinfos', 'main_file', 'source'])
-# a DatasetInfo Object is basically a tuple of UrlInfos object
-# an UrlInfo object is composed of an url and the filenames contained
-# in the request content
+import pandas as pd
+
+from common.file_management import fetch, write_df
+
+DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 
 EMPLOYEE_SALARIES_CONFIG = DatasetInfo(
@@ -20,11 +19,20 @@ EMPLOYEE_SALARIES_CONFIG = DatasetInfo(
             uncompress=False
         ),
     ),
-    main_file="rows.csv",
+    main_file="employee_salaries.csv",
     source="https://catalog.data.gov/dataset/employee-salaries-2016"
 )
 
-data_dir = fetch(EMPLOYEE_SALARIES_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_employee_salaries_df(save=True):
+    data_dir = fetch(EMPLOYEE_SALARIES_CONFIG)
+    file = os.listdir(data_dir[0])[0]
+    csv_path = os.path.join(data_dir[0], file)
+    df = pd.read_csv(csv_path)
+    df['Year First Hired'] = [datetime.datetime.strptime(d, '%m/%d/%Y').year for d in df['Date First Hired']]
+    df['Gender'] = df['Gender'].astype('category')
+    df['Department'] = df['Department'].astype('category')
+    df['Department Name'] = df['Department Name'].astype('category')
+    df['Assignment Category'] = df['Assignment Category'].astype('category')
+    write_df(save, df, data_dir[1], EMPLOYEE_SALARIES_CONFIG.main_file)
+    return df

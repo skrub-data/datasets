@@ -1,13 +1,12 @@
 import os
-import pandas
 from collections import namedtuple
-from common.file_management import fetch
 
-DatasetInfo = namedtuple('DatasetInfo',
-                         ['name', 'urlinfos', 'main_file', 'source'])
-# a DatasetInfo Object is basically a tuple of UrlInfos object
-# an UrlInfo object is composed of an url and the filenames contained
-# in the request content
+import numpy as np
+import pandas as pd
+
+from common.file_management import fetch, write_df
+
+DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 
 MET_OBJECTS_CONFIG = DatasetInfo(
@@ -20,11 +19,38 @@ MET_OBJECTS_CONFIG = DatasetInfo(
             ), uncompress=False
         ),
     ),
-    main_file="MetObjects.csv",
+    main_file="met_objects.csv",
     source="https://github.com/metmuseum/openaccess/raw/master/"
 )
 
-data_dir = fetch(MET_OBJECTS_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+def get_met_objects_df(save=True):
+    data_dir = fetch(MET_OBJECTS_CONFIG)
+    file = os.listdir(data_dir[0])[0]
+    csv_path = os.path.join(data_dir[0], file)
+    df = pd.read_csv(csv_path)
+    cat_cols = ['Department', 'Dynasty', 'State']
+    clean = ['Geography Type', 'State', 'Classification', 'Artist Role', 'Artist Prefix', 'Artist Display Bio',
+             'Artist Suffix', 'Geography Type']
+
+    period = []
+    for c in df['Period']:
+        if type(c) is str:
+            period.append(c)
+        else:
+            period.append(np.nan)
+    df['Period'] = pd.Series(period, dtype=np.object, index=df.index)
+
+    for c in clean:
+        tab = []
+        for elt in df[c]:
+            if elt == '|' or elt == '||' or elt == '(none assigned)':
+                tab.append(np.nan)
+            else:
+                tab.append(elt)
+        df[c] = pd.Series(tab, dtype=np.object, index=df.index)
+
+    for c in cat_cols:
+        df[c] = df[c].astype('category')
+
+    write_df(save, df, data_dir[1], MET_OBJECTS_CONFIG.main_file)
+    return df

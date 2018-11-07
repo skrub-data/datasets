@@ -1,13 +1,12 @@
 import os
-import pandas
 from collections import namedtuple
-from common.file_management import fetch
 
-DatasetInfo = namedtuple('DatasetInfo',
-                         ['name', 'urlinfos', 'main_file', 'source'])
-# a DatasetInfo Object is basically a tuple of UrlInfos object
-# an UrlInfo object is composed of an url and the filenames contained
-# in the request content
+import numpy as np
+import pandas as pd
+
+from common.file_management import fetch, write_df, float_to_int
+
+DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
 
 TRAFFIC_VIOLATIONS_CONFIG = DatasetInfo(
@@ -21,11 +20,30 @@ TRAFFIC_VIOLATIONS_CONFIG = DatasetInfo(
             ), uncompress=True
         ),
     ),
-    main_file="rows.csv",
-    source="https://catalog.data.gov/dataset/ traffic-violations-56dda"
+    main_file="traffic_violations.csv",
+    source="https://catalog.data.gov/dataset/traffic-violations-56dda"
 )
 
-data_dir = fetch(TRAFFIC_VIOLATIONS_CONFIG)
-file = os.listdir(data_dir)[0]
-csv_path = os.path.join(data_dir, file)
-df = pandas.read_csv(csv_path)
+
+def get_traffic_violations_df(save=True):
+    data_dir = fetch(TRAFFIC_VIOLATIONS_CONFIG)
+    file = os.listdir(data_dir[0])[0]
+    csv_path = os.path.join(data_dir[0], file)
+    df = pd.read_csv(csv_path)
+    df['Year'] = float_to_int(df['Year'], df.index)
+    clean = ['Make', 'Model']
+    for c in clean:
+        arr = []
+        for elt in df[c]:
+            if elt == 'NONE':
+                arr.append(np.nan)
+            else:
+                arr.append(elt)
+        df[c] = pd.Series(arr, dtype=np.object, index=df.index)
+
+    df['VehicleType'] = df['VehicleType'].astype('category')
+    df['Arrest Type'] = df['Arrest Type'].astype('category')
+    df['Race'] = df['Race'].astype('category')
+    df['Violation Type'] = df['Violation Type'].astype('category')
+    write_df(save, df, data_dir[1], TRAFFIC_VIOLATIONS_CONFIG.main_file)
+    return df

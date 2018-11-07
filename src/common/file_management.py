@@ -1,13 +1,14 @@
 import contextlib
 import gzip
 import os
-import requests
 import shutil
 import tarfile
 import urllib
 import zipfile
 
-from clint.textui import progress
+import numpy as np
+import pandas as pd
+import requests
 
 
 def _unzip(file, data_dir='./'):
@@ -74,9 +75,6 @@ def _download_file(url):
         if total_length is not None:
             with open(file, 'wb') as local_file:
                 content_iterator = r.iter_content(chunk_size=1024)
-                content_iterator = progress.bar(
-                    content_iterator, expected_size=(int(total_length) /
-                                                     1024) + 1)
                 for chunk in content_iterator:
                     if chunk:
                         local_file.write(chunk)
@@ -110,6 +108,7 @@ def _check_dir(config, directory=os.getcwd()):
 
 def fetch(config):
     paths, download = _check_dir(config)
+
     if download:
         urls = [elt.url for elt in config.urlinfos]
         for url in urls:
@@ -118,4 +117,21 @@ def fetch(config):
                 _process_file(file, paths[0])
             except Exception as e:
                 print(e)
-    return paths[0]
+
+    return paths
+
+
+def write_df(save, df, path, name):
+    save_path = os.path.join(path, name)
+    if save:
+        df.to_csv(save_path)
+
+
+def float_to_int(col, index):
+    c = []
+    for elt in col:
+        try:
+            c.append(int(elt))
+        except ValueError as e:
+            c.append(np.nan)
+    return pd.Series(c, dtype=np.object, index=index)
