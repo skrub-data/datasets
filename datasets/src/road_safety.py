@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import xlrd
 
-from common.file_management import fetch, write_df, float_to_int
+from .common.file_management import fetch, write_df, float_to_int
 
 DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])

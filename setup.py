@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-description_file = os.path.join(os.path.dirname(__file__), 'README.rst')
+description_file = os.path.join(os.path.dirname(__file__), 'README.md')
 with open(description_file) as fh:
     DESCRIPTION = fh.read()
 
