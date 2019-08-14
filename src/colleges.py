@@ -64,6 +64,7 @@ def get_colleges_df(save=True):
     cats = ['State', 'Predominant Degree', 'Highest Degree', 'Ownership', 'Region', 'ZIP']
     for c in cats:
         df[c] = df[c].astype('category')
-
+    df.rename(columns={col: col.lower() for
+              col in df.columns}, inplace=True)
     write_df(save, df, data_dir[1], COLLEGES_CONFIG.main_file)
     return df

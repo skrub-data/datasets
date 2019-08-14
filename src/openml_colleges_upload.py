@@ -18,7 +18,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Faculty_Salary',
+    'default_target_attribute': 'faculty_salary',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
