@@ -24,6 +24,7 @@ CRIME_DATA_CONFIG = DatasetInfo(
 
 
 def get_crime_df(save=True):
+    # FIXME dead link :s
     data_dir = fetch(CRIME_DATA_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
@@ -31,10 +32,11 @@ def get_crime_df(save=True):
 
     cols = ['Area Name', 'Victim Sex', 'Victim Descent', 'Premise Description', 'Weapon Description',
             'Status Description', 'Crime Code Description']
+    print(df.columns)
     df['Victim Age'] = float_to_int(df['Victim Age'], df.index)
     df['Premise Code'] = float_to_int(df['Premise Code'], df.index)
     df['Weapon Used Code'] = float_to_int(df['Weapon Used Code'], df.index)
-    df['Crime Code 1'] = float_to_int(df['Crime Code 1'], df.index)
+    df['Crime_Code_1'] = float_to_int(df['Crime Code 1'], df.index)
     df['Crime Code 2'] = float_to_int(df['Crime Code 2'], df.index)
     df['Crime Code 3'] = float_to_int(df['Crime Code 3'], df.index)
     df['Crime Code 4'] = float_to_int(df['Crime Code 4'], df.index)

@@ -13,5 +13,7 @@ def get_house_sales_df():
     df = pd.read_csv(csv_path, index_col=0)
     df.rename(columns={col: col.lower() for
               col in df.columns}, inplace=True)
-    df['zip_code'] = df['zip_code'].astype('category')
+    print(df.columns)
+    df['zipcode'] = df['zipcode'].astype(str)
+    df['zipcode'] = df['zipcode'].astype('category')
     return df

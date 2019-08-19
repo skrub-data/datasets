@@ -7,9 +7,7 @@ openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
 openml.config.apikey = 'ca1d24f37f00a1517a1638d5acc24321'  # Thomas
 df = get_cacao_flavor_df()
 
-params = {
-    'name': 'cacao_flavor',
-    'description': """Chocolate Bar Ratings.
+full_desc = """Chocolate Bar Ratings.
     Expert ratings of over 1,700 chocolate bars. Each chocolate is evaluated from a combination of both objective qualities and subjective interpretation. A rating here only represents an experience with one bar from one batch. Batch numbers, vintages and review dates are included in the database when known.
 
     The database is narrowly focused on plain dark chocolate with an aim of appreciating the flavors of the cacao when made into chocolate. The ratings do not reflect health benefits, social missions, or organic status.
@@ -30,7 +28,12 @@ params = {
     1= Unpleasant (mostly unpalatable)
 
     Acknowledgements
-    These ratings were compiled by Brady Brelinski, Founding Member of the Manhattan Chocolate Society. For up-to-date information, as well as additional content (including interviews with craft chocolate makers), please see his website: http://flavorsofcacao.com/index.html""",
+    These ratings were compiled by Brady Brelinski, Founding Member of the Manhattan Chocolate Society. For up-to-date information, as well as additional content (including interviews with craft chocolate makers), please see his website: http://flavorsofcacao.com/index.html"""
+
+desc = """Chocolate bar ratings."""
+params = {
+    'name': 'cacao_flavor',
+    'description': desc,
     'creator': 'http://flavorsofcacao.com/index.html',
     'contributor': 'https://www.kaggle.com/rtatman/',
     'language': 'English',

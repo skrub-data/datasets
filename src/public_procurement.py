@@ -26,6 +26,11 @@ PUBLIC_PROCUREMENT_CONFIG = DatasetInfo(
 
 
 def get_public_procurement_df(save=True):
+
+    # FIXME df.shape = (565163, 75) != from paper
+    # FIXME nb category cae_name = 39623 != from paper
+    # FIXME cae_name become str rathe than category
+    # (openml requirments)
     data_dir = fetch(PUBLIC_PROCUREMENT_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
@@ -50,6 +55,10 @@ def get_public_procurement_df(save=True):
     df.loc[[39165, 39164], 'CONTRACT_NUMBER'] = np.nan
     df.rename(columns={col: col.lower() for
               col in df.columns}, inplace=True)
-    df['cae_name'] = df['cae_name'].astype('category')
+    # df['cae_name'] = df['cae_name'].astype('category')
+    df['cae_name'] = df['cae_name'].astype(str)
+    tronq_cae = [str(x)[:1023] for x in df['cae_name']]
+    df['cae_name'] = pd.Series(tronq_cae, dtype=df['cae_name'].dtype,
+                               index=df.index)
     write_df(save, df, data_dir[1], PUBLIC_PROCUREMENT_CONFIG.main_file)
     return df

@@ -21,7 +21,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Crime_Code_1',
+    'default_target_attribute': 'Crime Code 1',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
