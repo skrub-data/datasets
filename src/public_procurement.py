@@ -55,7 +55,7 @@ def get_public_procurement_df(save=True):
     df.loc[[39165, 39164], 'CONTRACT_NUMBER'] = np.nan
     df.rename(columns={col: col.lower() for
               col in df.columns}, inplace=True)
-    # df['cae_name'] = df['cae_name'].astype('category')
+    # df['cae_name'] = df['cae_name'].astype('category')  
     df['cae_name'] = df['cae_name'].astype(str)
     tronq_cae = [str(x)[:1023] for x in df['cae_name']]
     df['cae_name'] = pd.Series(tronq_cae, dtype=df['cae_name'].dtype,
