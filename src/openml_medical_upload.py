@@ -4,6 +4,7 @@ from openml.datasets import create_dataset
 from medical_charge import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
+openml.config.apikey = 'ca1d24f37f00a1517a1638d5acc24321'  # Thomas
 df = get_medical_charge_df()
 
 params = {
@@ -22,7 +23,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Average_total_payments',
+    'default_target_attribute': 'average_total_payments',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',

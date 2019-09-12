@@ -4,6 +4,8 @@ from openml.datasets import create_dataset
 from colleges import *
 
 openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
+openml.config.apikey = 'ca1d24f37f00a1517a1638d5acc24321'  # Thomas
+
 df = get_colleges_df()
 
 params = {

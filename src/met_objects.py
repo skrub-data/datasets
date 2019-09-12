@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+import re
 
 import numpy as np
 import pandas as pd
@@ -64,6 +65,7 @@ def get_met_objects_df(save=True):
 
     for c in cat_cols:
         df[c] = df[c].astype('category')
-
+    df.rename(columns={col: re.sub(' ', '_', col).lower() for
+              col in df.columns}, inplace=True)
     write_df(save, df, data_dir[1], MET_OBJECTS_CONFIG.main_file)
     return df

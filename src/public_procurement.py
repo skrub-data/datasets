@@ -29,7 +29,7 @@ def get_public_procurement_df(save=True):
 
     # FIXME df.shape = (565163, 75) != from paper
     # FIXME nb category cae_name = 39623 != from paper
-    # FIXME cae_name become str rathe than category
+    # FIXME cae_name become str rather than category
     # (openml requirments)
     data_dir = fetch(PUBLIC_PROCUREMENT_CONFIG)
     file = os.listdir(data_dir[0])[0]

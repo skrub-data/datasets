@@ -7,7 +7,7 @@ openml.config.apikey = '58012f5a6cbba5dcd3ddefbf852c1e99'
 openml.config.apikey = 'ca1d24f37f00a1517a1638d5acc24321'  # Thomas
 df = get_building_permits_df()
 
-print('use head !')
+print('use head  ! ' * 100)
 df = df.head(n=1500)
 
 desc = """This dataset includes information about currently-valid building permits issued by the City of Chicago from 2006 to the present. Building permits are issued subject to payment of applicable fees. If building or zoning permit fees show as unpaid, the permit is not valid. (A permit is valid if only 'other fees' are shown as unpaid.) This dataset does not include permits which have been issued and voided or revoked. This dataset also does not include permits for mechanical amusement riding devices and carnivals issued by the Department of Buildings.

@@ -30,10 +30,9 @@ full_desc = """Chocolate Bar Ratings.
     Acknowledgements
     These ratings were compiled by Brady Brelinski, Founding Member of the Manhattan Chocolate Society. For up-to-date information, as well as additional content (including interviews with craft chocolate makers), please see his website: http://flavorsofcacao.com/index.html"""
 
-desc = """Chocolate bar ratings."""
 params = {
     'name': 'cacao_flavor',
-    'description': desc,
+    'description': full_desc,
     'creator': 'http://flavorsofcacao.com/index.html',
     'contributor': 'https://www.kaggle.com/rtatman/',
     'language': 'English',
@@ -42,7 +41,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Bean Type',
+    'default_target_attribute': 'bean_type',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',
