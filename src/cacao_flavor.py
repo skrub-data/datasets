@@ -16,7 +16,7 @@ def get_cacao_flavor_df():
 
     for col in ['company__(maker-if_known)',
             'specific_bean_origin_or_bar_name',
-            'broad_bean_origin']:
+            'broad_bean_origin']
     # remove '&'
     
     return df
