@@ -34,7 +34,7 @@ def get_public_procurement_df(save=True):
     data_dir = fetch(PUBLIC_PROCUREMENT_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, low_memory=False)
 
     df.loc[df.ID_LOT == 'Zp 2130-64/15', 'ID_LOT'] = np.nan
     df.ID_LOT = df.ID_LOT.astype(float)

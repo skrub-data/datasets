@@ -29,7 +29,7 @@ def get_met_objects_df(save=True):
     data_dir = fetch(MET_OBJECTS_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
-    df = pd.read_csv(csv_path, encoding='utf-8')
+    df = pd.read_csv(csv_path, encoding='utf-8', low_memory=False)
     cat_cols = ['Department', 'Dynasty', 'State']
     clean = ['Geography Type', 'State', 'Classification', 'Artist Role', 'Artist Prefix', 'Artist Display Bio',
              'Artist Suffix', 'Geography Type']

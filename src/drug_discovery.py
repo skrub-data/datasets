@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+import re
 
 import pandas as pd
 
@@ -28,6 +29,8 @@ def get_drug_discovery_df(save=True):
     file = os.listdir(data_dir[0])[1]
     csv_path = os.path.join(data_dir[0], file)
     df = pd.read_csv(csv_path, sep='\t', encoding='latin1')
+    # link data have changed...
+    return df
     cat_cols = ['DRG Definition', 'Provider State']
     for c in cat_cols:
         df[c] = df[c].astype('category')
