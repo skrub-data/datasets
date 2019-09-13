@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import kaggle
-
+import re
 
 def get_building_permits_df():
     kaggle.api.authenticate()
@@ -10,7 +10,7 @@ def get_building_permits_df():
     # dataset update daily.
 
     csv_path = 'data/building_permits/raw/building-permits.csv'
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, low_memory=False)
     df.columns = df.columns.str.strip()
     df['PERMIT#'] = df['PERMIT#'].astype(str)
     for col in df.columns:
@@ -24,4 +24,6 @@ def get_building_permits_df():
         if 'contact_' in col:
             df[col] = df[col].astype(str)
     df['work_description'] = df['work_description'].astype('category')
+    df.rename(columns={col: re.sub('@|:|#', '', col) for
+              col in df.columns}, inplace=True)
     return df

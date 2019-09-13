@@ -16,7 +16,10 @@ def get_cacao_flavor_df():
 
     for col in ['company__(maker-if_known)',
             'specific_bean_origin_or_bar_name',
-            'broad_bean_origin']
-    # remove '&'
+            'broad_bean_origin']:
+        if col == 'broad_bean_origin':
+                df[col].fillna('\xa0', inplace=True) #replace one nan by space
+        df[col] = [re.sub('&','et',s) for s in list(df[col])]
+        df[col] = [re.sub('\xa0',' ',s) for s in list(df[col])]
     
     return df

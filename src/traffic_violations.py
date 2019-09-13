@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+import re
 
 import numpy as np
 import pandas as pd
