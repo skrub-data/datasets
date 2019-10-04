@@ -35,7 +35,7 @@ def get_crime_df(save=True):
 
     cols = ['Area Name', 'Victim Sex', 'Victim Descent', 'Premise Description', 'Weapon Description',
             'Status Description', 'Crime Code Description']
-    print(df.columns)
+    
     df['Victim Age'] = float_to_int(df['Victim Age'], df.index)
     df['Premise Code'] = float_to_int(df['Premise Code'], df.index)
     df['Weapon Used Code'] = float_to_int(df['Weapon Used Code'], df.index)
@@ -49,5 +49,6 @@ def get_crime_df(save=True):
         df[c] = df[c].astype('category')
     df.rename(columns={col: re.sub(' ', '_', col) for
               col in df.columns}, inplace=True)
-    # write_df(save, df, data_dir[1], CRIME_DATA_CONFIG.main_file)
+    # drop rows with missing label
+    df.drop(index = df.index[df['Victim_Age'].isna()], inplace=True)
     return df

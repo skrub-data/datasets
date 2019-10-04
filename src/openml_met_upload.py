@@ -20,7 +20,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'is_public_domain',
+    'default_target_attribute': 'department',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',

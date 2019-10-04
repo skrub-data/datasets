@@ -20,7 +20,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'faculty_salary',
+    'default_target_attribute': 'percent_pell_grant',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',

@@ -60,5 +60,6 @@ def get_public_procurement_df(save=True):
     tronq_cae = [str(x)[:1023] for x in df['cae_name']]
     df['cae_name'] = pd.Series(tronq_cae, dtype=df['cae_name'].dtype,
                                index=df.index)
-    write_df(save, df, data_dir[1], PUBLIC_PROCUREMENT_CONFIG.main_file)
+    # replace nan by -1 in target values (openml requirement)
+    df['award_value_euro'] = [-1 if np.isnan(x) else x for x in df['award_value_euro']]
     return df

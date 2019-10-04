@@ -151,6 +151,7 @@ def get_road_safety_df(save=True):
     folder = "~/Documents/datasets/src/data/dragostore/RoadSafetyData_2015/"
     files = dict()
     files['data'] = [folder+x for x in ['Accidents_2015.csv',  'Casualties_2015.csv',  'Vehicles_2015.csv']]
+    files['description'] = '~/Documents/datasets/src/data/road_safety/raw/Road-Accident-Safety-Data-Guide.xls'
     df = _process_df(files)
     f_to_i = ['1st_Road_Number', '2nd_Road_Number', 'Location_Easting_OSGR', 'Location_Northing_OSGR',
               'Number_of_Vehicles', 'Number_of_Casualties', 'Speed_limit', 'accyr', 'Engine_Capacity_(CC)_df',

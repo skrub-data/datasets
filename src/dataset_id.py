@@ -6,8 +6,8 @@
 dataset_id = {
 "building_permits" :  None,
 "beer_reviews" : 42088,
-"colleges" : None,
-"crime_data" : None,
+"colleges" : 42159,
+"crime_data" : 42160,
 "drug_directory" : None,
 "employe_salaries" : 42125,
 "federal_election" : 42080,
@@ -35,11 +35,12 @@ dataset_id = {
 from sklearn.datasets import fetch_openml
 
 def test_fetch_openml():
-
+    # fetch all dataset currently available
     for name, id in dataset_id.items():
         if id is not None:
             print('fetch ', name)
-            data = fetch_openml(data_id = id)
+            # requiered sklearn >= 0.22 !!
+            data = fetch_openml(data_id = id, as_frame=True)
             print('- data shape:', data['data'].shape)
 
 

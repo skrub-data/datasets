@@ -110,6 +110,8 @@ def get_midwest_survey_df(save=True):
     write_df(save, df, data_dir[1], MIDWEST_SURVEY_CONFIG.main_file)
     df.rename(columns={col: 'Location_Census_Region' for
               col in ['Location (Census Region)']}, inplace=True)
+    # drop rows with missing label
+    df.drop(index = df.index[df['Location_Census_Region'].isna()], inplace=True)          
     return df
 
 

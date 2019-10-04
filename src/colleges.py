@@ -67,7 +67,10 @@ def get_colleges_df(save=True):
         df[c] = df[c].astype('category')
     df.rename(columns={col: col.lower() for
               col in df.columns}, inplace=True)
-    write_df(save, df, data_dir[1], COLLEGES_CONFIG.main_file)
+    # write_df(save, df, data_dir[1], COLLEGES_CONFIG.main_file)
     df.rename(columns={col: re.sub(' ', '_', col).lower() for
               col in df.columns}, inplace=True)
+    
+    # drop rows with missing label
+    df.drop(index = df.index[df['percent_pell_grant'].isna()], inplace=True)
     return df
