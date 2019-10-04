@@ -17,29 +17,30 @@ dataset_id = {
 "met_objects" : None,
 "midwest_survey" : None,
 "open_payment" : None,
-"public_procurement" : None,
+"public_procurement" : 42163,
 "road_safety" : None,
-"traffic_violations" : None,
+"traffic_violations" : 42132,
 "vancouver_employee" : 42089,
 "wine_reviews" : 42074,
 
-"Adult" : 1590,
+"adult" : 1590,
 "cacao_flavor" : 42133,
 "california_housing" : 537,
-"dating_profile" : None,
-"house_prices" : None,
+"dating_profile" : 42164,
+"house_prices" : 42165,
 "house_sales" : 42092,
-"intrusion_detection" : None,
+"intrusion_detection" : 1113,
 }
 
 from sklearn.datasets import fetch_openml
 
 def test_fetch_openml():
     # fetch all dataset currently available
+    # required sklearn >= 0.22 !!
+
     for name, id in dataset_id.items():
         if id is not None:
-            print('fetch ', name)
-            # requiered sklearn >= 0.22 !!
+            print('fetching ', name,' ...')
             data = fetch_openml(data_id = id, as_frame=True)
             print('- data shape:', data['data'].shape)
 
