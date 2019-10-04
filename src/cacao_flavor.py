@@ -21,5 +21,6 @@ def get_cacao_flavor_df():
                 df[col].fillna('\xa0', inplace=True) #replace one nan by space
         df[col] = [re.sub('&','et',s) for s in list(df[col])]
         df[col] = [re.sub('\xa0',' ',s) for s in list(df[col])]
-    
+    # drop the only row with missing label
+    df.drop(index = df.index[df['bean_type'].isna()], inplace=True)       
     return df
