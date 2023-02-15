@@ -1,7 +1,9 @@
 # Datasets
 Download and denormalization scripts for dirty_cat datasets.
 
-Contains also the Happiness score from the World Happiness Report 2022[[1]](#1).
+Contains also:
+- Correspondence table between KEN Embeddings and their figshare download ID. 
+- Happiness score dataset from the World Happiness Report 2022[[1]](#1).
 
 ## References
 <a id="1">[1]</a>  
