@@ -17,12 +17,11 @@ def _unzip(file, data_dir='./'):
     z.close()
 
 
-def _untargz(file, ext):
-    gz = gzip.open(file)
-    out = open(file, 'wb')
-    shutil.copyfileobj(gz, out, 8192)
-    gz.close()
-    out.close()
+def _untargz(file, data_dir):
+    out = os.path.join(data_dir, os.path.splitext(file)[0])
+    with gzip.open(file) as gz:
+        with open(out, 'wb') as f_out:
+            shutil.copyfileobj(gz, f_out, 8192)
 
 
 def _untar(file, data_dir):
@@ -42,7 +41,7 @@ def _uncompress_file(file, data_dir, delete_archive):
         _unzip(file, data_dir)
         processed = True
     elif ext == '.gz' or header.startswith(b'\x1f\x8b'):
-        _untargz(file, ext)
+        _untargz(file, data_dir)
         processed = True
     if os.path.isfile(file) and tarfile.is_tarfile(file):
         _untar(file, data_dir)
