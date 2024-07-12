@@ -3,7 +3,7 @@ from collections import namedtuple
 
 import pandas as pd
 
-from common.file_management import fetch, write_df
+from .common.file_management import fetch, write_df
 
 DatasetInfo = namedtuple('DatasetInfo', ['name', 'urlinfos', 'main_file', 'source'])
 UrlInfo = namedtuple('UrlInfo', ['url', 'filenames', 'uncompress'])
