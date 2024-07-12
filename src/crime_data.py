@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+import re
 
 import pandas as pd
 
@@ -24,13 +25,17 @@ CRIME_DATA_CONFIG = DatasetInfo(
 
 
 def get_crime_df(save=True):
-    data_dir = fetch(CRIME_DATA_CONFIG)
-    file = os.listdir(data_dir[0])[0]
-    csv_path = os.path.join(data_dir[0], file)
+    # FIXME dead link :s
+    # data_dir = fetch(CRIME_DATA_CONFIG)
+    # data_dir = "/home/thomas/Documents/datasets/src/data/dragostore/crime_data/"
+    # file = os.listdir(data_dir[0])[0]
+    # csv_path = os.path.join(data_dir[0], file)
+    csv_path = "/home/thomas/Documents/datasets/src/data/dragostore/crime_data/Crime_Data_from_2010_to_Present.csv"
     df = pd.read_csv(csv_path)
 
     cols = ['Area Name', 'Victim Sex', 'Victim Descent', 'Premise Description', 'Weapon Description',
             'Status Description', 'Crime Code Description']
+    
     df['Victim Age'] = float_to_int(df['Victim Age'], df.index)
     df['Premise Code'] = float_to_int(df['Premise Code'], df.index)
     df['Weapon Used Code'] = float_to_int(df['Weapon Used Code'], df.index)
@@ -42,6 +47,8 @@ def get_crime_df(save=True):
         if df[c].dtype == float:
             df[c] = float_to_int(df[c], df.index)
         df[c] = df[c].astype('category')
-
-    write_df(save, df, data_dir[1], CRIME_DATA_CONFIG.main_file)
+    df.rename(columns={col: re.sub(' ', '_', col) for
+              col in df.columns}, inplace=True)
+    # drop rows with missing label
+    df.drop(index = df.index[df['Victim_Age'].isna()], inplace=True)
     return df

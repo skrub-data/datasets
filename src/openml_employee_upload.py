@@ -19,7 +19,7 @@ params = {
     'attributes': 'auto',
     'data': df,
     'ignore_attribute': None,
-    'default_target_attribute': 'Current_Annual_Salary',
+    'default_target_attribute': 'current_annual_salary',
     'row_id_attribute': df.index.name,
     'citation': None,
     'version_label': '0.1',

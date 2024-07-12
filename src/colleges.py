@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+import re
 
 import numpy as np
 import pandas as pd
@@ -64,6 +65,12 @@ def get_colleges_df(save=True):
     cats = ['State', 'Predominant Degree', 'Highest Degree', 'Ownership', 'Region', 'ZIP']
     for c in cats:
         df[c] = df[c].astype('category')
-
-    write_df(save, df, data_dir[1], COLLEGES_CONFIG.main_file)
+    df.rename(columns={col: col.lower() for
+              col in df.columns}, inplace=True)
+    # write_df(save, df, data_dir[1], COLLEGES_CONFIG.main_file)
+    df.rename(columns={col: re.sub(' ', '_', col).lower() for
+              col in df.columns}, inplace=True)
+    
+    # drop rows with missing label
+    df.drop(index = df.index[df['percent_pell_grant'].isna()], inplace=True)
     return df

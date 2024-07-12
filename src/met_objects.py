@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+import re
 
 import numpy as np
 import pandas as pd
@@ -28,7 +29,7 @@ def get_met_objects_df(save=True):
     data_dir = fetch(MET_OBJECTS_CONFIG)
     file = os.listdir(data_dir[0])[0]
     csv_path = os.path.join(data_dir[0], file)
-    df = pd.read_csv(csv_path, encoding='utf-8')
+    df = pd.read_csv(csv_path, encoding='utf-8', low_memory=False)
     cat_cols = ['Department', 'Dynasty', 'State']
     clean = ['Geography Type', 'State', 'Classification', 'Artist Role', 'Artist Prefix', 'Artist Display Bio',
              'Artist Suffix', 'Geography Type']
@@ -64,6 +65,7 @@ def get_met_objects_df(save=True):
 
     for c in cat_cols:
         df[c] = df[c].astype('category')
-
+    df.rename(columns={col: re.sub(' ', '_', col).lower() for
+              col in df.columns}, inplace=True)
     write_df(save, df, data_dir[1], MET_OBJECTS_CONFIG.main_file)
     return df
