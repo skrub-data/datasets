@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+import re
 
 import numpy as np
 import pandas as pd
@@ -53,5 +54,7 @@ def get_traffic_violations_df(save=True):
     df['Arrest Type'] = df['Arrest Type'].astype('category')
     df['Race'] = df['Race'].astype('category')
     df['Violation Type'] = df['Violation Type'].astype('category')
+    df.rename(columns={col: re.sub(' ', '_', col).lower() for
+              col in df.columns}, inplace=True)
     write_df(save, df, data_dir[1], TRAFFIC_VIOLATIONS_CONFIG.main_file)
     return df

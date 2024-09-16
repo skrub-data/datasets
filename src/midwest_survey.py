@@ -108,6 +108,10 @@ def get_midwest_survey_df(save=True):
     df = pd.read_csv(csv_path, index_col='RespondentID')
     df = merge_columns(df)
     write_df(save, df, data_dir[1], MIDWEST_SURVEY_CONFIG.main_file)
+    df.rename(columns={col: 'Location_Census_Region' for
+              col in ['Location (Census Region)']}, inplace=True)
+    # drop rows with missing label
+    df.drop(index = df.index[df['Location_Census_Region'].isna()], inplace=True)          
     return df
 
 

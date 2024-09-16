@@ -35,5 +35,7 @@ def get_beer_reviews_df(save=True):
                 elt = elt.replace('\xa0', ' ')
             arr.append(elt)
         df[c] = pd.Series(arr, dtype=df[c].dtype, index=df.index)
+    df.rename(columns={col: col.lower() for
+              col in df.columns}, inplace=True)
     write_df(save, df, data_dir[1], BEER_REVIEWS_CONFIG.main_file)
     return df

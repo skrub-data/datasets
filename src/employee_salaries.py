@@ -1,6 +1,7 @@
 import datetime
 import os
 from collections import namedtuple
+import re
 
 import pandas as pd
 
@@ -35,4 +36,6 @@ def get_employee_salaries_df(save=True):
     df['Department Name'] = df['Department Name'].astype('category')
     df['Assignment Category'] = df['Assignment Category'].astype('category')
     write_df(save, df, data_dir[1], EMPLOYEE_SALARIES_CONFIG.main_file)
+    df.rename(columns={col: re.sub(' ', '_', col).lower() for
+              col in df.columns}, inplace=True)
     return df
