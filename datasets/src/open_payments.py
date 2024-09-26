@@ -3,7 +3,7 @@ from collections import namedtuple
 
 import pandas as pd
 
-from common.file_management import fetch, write_df
+from .common.file_management import fetch, write_df
 
 amount = ['Total_Amount_of_Payment_USDollars']
 corp = ['Applicable_Manufacturer_or_Applicable_GPO_Making_' + 'Payment_Name']
